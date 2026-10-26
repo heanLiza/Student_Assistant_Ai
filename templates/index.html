@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="km">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Study Assistant · ជំនួយការសិក្សា</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app">
+
+  <aside class="side">
+    <div class="brandbox">Study<b>AI</b></div>
+    <div class="quick">
+      <button class="qcard" data-click="sample" type="button">ឧទាហរណ៍<small>Example</small></button>
+      <button class="qcard" data-click="file" type="button">Upload<small>ឯកសារ</small></button>
+    </div>
+    <nav class="menu">
+      <button class="nav-item active" data-task="explain" type="button">ពន្យល់មេរៀន<small>Explain</small></button>
+      <button class="nav-item" data-task="summarize" type="button">សង្ខេបមេរៀន<small>Summarize</small></button>
+      <button class="nav-item" data-task="flashcards" type="button">Flashcards</button>
+      <button class="nav-item" data-task="quiz" type="button">Quiz</button>
+      <button class="nav-item" data-task="practice" type="button">សំណួរហាត់<small>Practice</small></button>
+      <button class="nav-item" data-click="clear" type="button">សម្អាត<small>Clear</small></button>
+    </nav>
+    <div class="promo p1"><b>Powered by Gemini</b><span>AI សម្រាប់ការសិក្សា</span></div>
+    <div class="promo p2"><b>Tip</b><span>Ctrl + Enter = Generate</span></div>
+  </aside>
+
+  <main class="main">
+    <div id="drop" class="drop" tabindex="0" role="button" aria-label="Upload a file">
+      <span class="drop-text">ទាញឯកសារមកទីនេះ · Drag &amp; drop .txt .md .pdf .docx</span>
+      <em>Browse</em>
+      <input id="file" type="file" accept=".txt,.md,.pdf,.docx,.csv" hidden>
+    </div>
+
+    <section class="hero">
+      <div class="orb"></div>
+      <h1>ស្វាគមន៍មកកាន់ Study Assistant</h1>
+      <p>Your all-in-one study buddy</p>
+    </section>
+
+    <div class="tasks" role="radiogroup">
+      <button class="task active" role="radio" aria-checked="true" data-task="explain" type="button"><b>ពន្យល់</b><small>Explain</small></button>
+      <button class="task" role="radio" aria-checked="false" data-task="summarize" type="button"><b>សង្ខេប</b><small>Summarize</small></button>
+      <button class="task" role="radio" aria-checked="false" data-task="flashcards" type="button"><b>Flashcards</b><small>Memorize</small></button>
+      <button class="task" role="radio" aria-checked="false" data-task="quiz" type="button"><b>Quiz</b><small>Test yourself</small></button>
+      <button class="task" role="radio" aria-checked="false" data-task="practice" type="button"><b>សំណួរហាត់</b><small>Practice</small></button>
+    </div>
+
+    <section class="prompt">
+      <div class="prompt-top"><span>មេរៀនរបស់អ្នក · Your lesson</span><span id="counter">0 / {{ max_chars }}</span></div>
+      <textarea id="lesson" rows="5" maxlength="{{ max_chars }}"
+        placeholder="បិទភ្ជាប់មេរៀនរបស់អ្នកនៅទីនេះ… / Paste your lesson here, or drop a file above"></textarea>
+      <div class="prompt-bar">
+        <div class="chips">
+          <button class="chip-btn" id="sample" type="button">Example</button>
+          <button class="chip-btn" id="clear" type="button">Clear</button>
+          <div id="countBox" class="stepper hidden">
+            <button id="minus" type="button" aria-label="Less">&minus;</button>
+            <input id="count" type="number" min="1" max="15" value="5" aria-label="Items">
+            <button id="plus" type="button" aria-label="More">+</button>
+          </div>
+          <select id="language" class="chip-select" aria-label="Language">
+            <option value="auto">Auto</option>
+            <option value="km">ខ្មែរ</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+        <button id="go" class="send" type="button">បង្កើត<span>Generate</span></button>
+      </div>
+    </section>
+    <p id="fileInfo" class="file-info hidden"></p>
+
+    <section id="result" class="result hidden">
+      <div class="result-head"><h2>លទ្ធផល <small>Result</small></h2><div id="actions"></div></div>
+      <p id="info" class="chip hidden"></p>
+      <div id="loading" class="loading hidden">
+        <div class="skeleton"></div><div class="skeleton s2"></div><div class="skeleton s3"></div>
+        <p><span class="spinner"></span> កំពុងដំណើរការ… <b id="elapsed">0s</b>
+           <button id="cancel" class="link" type="button">បោះបង់ Cancel</button></p>
+      </div>
+      <div id="output" class="output"></div>
+    </section>
+  </main>
+</div>
+<div id="toast" class="toast hidden" role="alert"></div>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
